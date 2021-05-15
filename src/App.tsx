@@ -1,10 +1,10 @@
-import React from 'react';
-import logo from 'src/assets/images/logo.svg';
+import React from "react";
+import logo from "src/assets/images/logo.svg";
 
-import 'src/styles/App.scss';
+import "src/styles/App.scss";
 
 
-function App() {
+const App = (): JSX.Element => {
   return (
     <div className="App">
       <header className="App-header">
@@ -23,6 +23,6 @@ function App() {
       </header>
     </div>
   );
-}
+};
 
 export default App;
