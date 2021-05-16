@@ -1,4 +1,4 @@
-import React from "react";
+import { useEffect } from "react";
 import shallow from "zustand/shallow";
 
 import logo from "src/assets/images/logo.svg";
@@ -7,11 +7,10 @@ import { StatusEnum } from "src/types/common";
 
 import "src/styles/app.scss";
 
-
 function App(): JSX.Element {
   const [appStatus, startApp] = useAppStore((s) => [s.status, s.startApp], shallow);
 
-  React.useEffect((): void => {
+  useEffect((): void => {
     if (appStatus === StatusEnum.IDLE) {
       startApp();
     }
@@ -20,26 +19,19 @@ function App(): JSX.Element {
   const isRunning = appStatus === StatusEnum.RUNNING;
 
   return (
-    <div className="App" >
+    <div className="App">
       <header className="App-header">
-        {isRunning &&
+        {isRunning && (
           <>
             <img src={logo} className="App-logo" alt="logo" />
-            <p>
-              Loading App
-            </p>
+            <p>Loading App</p>
           </>
-        }
+        )}
 
-        {!isRunning &&
-          <p>
-            App loaded.
-          </p>
-        }
+        {!isRunning && <p>App loaded.</p>}
       </header>
     </div>
   );
 }
-
 
 export default App;

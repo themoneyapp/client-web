@@ -1,14 +1,13 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { render } from "react-dom";
 
 import App from "src/containers/app";
-import reportWebVitals from "./reportWebVitals";
-import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+import reportWebVitals from "src/reportWebVitals";
+import * as serviceWorkerRegistration from "src/serviceWorkerRegistration";
 
 import "src/styles/index.scss";
 
-
-ReactDOM.render(
+render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,

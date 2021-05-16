@@ -1,14 +1,15 @@
 import { SetState, GetState } from "zustand";
-import { AppStore } from "src/types/store";
+
 import { StatusEnum } from "src/types/common";
-
-
+import { AppStore } from "src/types/store";
 function _sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-
-export async function startApp(setState: SetState<AppStore>, getState: GetState<AppStore>): Promise<void> {
+export async function startApp(
+  setState: SetState<AppStore>,
+  getState: GetState<AppStore>
+): Promise<void> {
   const state = getState();
   if (state.status === StatusEnum.RUNNING) {
     return;
