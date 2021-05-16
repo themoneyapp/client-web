@@ -1,24 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider } from "react-redux";
-
-import { configureStore } from "src/store";
 
 import App from "src/containers/app";
 import reportWebVitals from "./reportWebVitals";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
-import "src/types/global.d";
 import "src/styles/index.scss";
 
 
-const store = configureStore();
-
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );

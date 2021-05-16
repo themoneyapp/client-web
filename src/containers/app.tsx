@@ -1,55 +1,45 @@
 import React from "react";
-import { connect } from "react-redux";
+import shallow from "zustand/shallow";
 
-import { appLoadInit } from "src/actions/app";
 import logo from "src/assets/images/logo.svg";
-import { BaseProps } from "src/types/props";
-import { StoreState } from "src/types/state";
+import { useAppStore } from "src/store";
 import { StatusEnum } from "src/types/common";
 
 import "src/styles/app.scss";
 
 
-interface PropsFromStore {
-  status: StatusEnum;
-}
+function App(): JSX.Element {
+  const [appStatus, startApp] = useAppStore((s) => [s.status, s.startApp], shallow);
 
-interface Props extends BaseProps, PropsFromStore { }
+  React.useEffect((): void => {
+    if (appStatus === StatusEnum.IDLE) {
+      startApp();
+    }
+  });
 
+  const isRunning = appStatus === StatusEnum.RUNNING;
 
-export class App extends React.Component<Props> {
-  componentDidMount(): void {
-    this.props.dispatch(appLoadInit());
-  }
+  return (
+    <div className="App" >
+      <header className="App-header">
+        {isRunning &&
+          <>
+            <img src={logo} className="App-logo" alt="logo" />
+            <p>
+              Loading App
+            </p>
+          </>
+        }
 
-  render(): JSX.Element {
-    return (
-      <div className="App" >
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+        {!isRunning &&
           <p>
-            Edit <code>src/App.tsx</code> and save to reload.
+            App loaded.
           </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+        }
+      </header>
+    </div>
+  );
 }
 
 
-function mapStateToProps(state: StoreState): PropsFromStore {
-  return {
-    status: state.app.status,
-  };
-}
-
-
-export default connect(mapStateToProps)(App);
+export default App;
