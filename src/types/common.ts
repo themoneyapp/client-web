@@ -23,6 +23,7 @@ export interface RouteConfig {
 
 export interface BaseMenuItem {
   title: string;
+  eventKey: string;
   route?: RouteConfig;
 }
 

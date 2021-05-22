@@ -4,6 +4,7 @@ import menu from "src/constants/menu";
 import { BaseMenuItem, MenuItem, RouteConfig } from "src/types/common";
 
 import Authenticated from "./Authenticated";
+import Sidebar from "./Sidebar";
 
 function flattenRoutes(): RouteConfig[] {
   const allRoutes: RouteConfig[] = [];
@@ -25,6 +26,7 @@ function Routes(): JSX.Element {
   const allRoutes = flattenRoutes();
   return (
     <Switch>
+      <Sidebar />
       {allRoutes.map((route: RouteConfig, index: number): JSX.Element => {
         return (
           <Route

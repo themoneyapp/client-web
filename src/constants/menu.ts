@@ -7,15 +7,27 @@ const LOGIN = lazy(() => import("src/views/Login"));
 
 export const ROUTE_CONFIG: BigObject<RouteConfig> = {
   DASHBOARD: { path: "/", isPrivate: true, component: HOME },
+  ADMIN_OVERVIEW: { path: "/admin", isPrivate: true, component: HOME },
+  ADMIN_USERS: { path: "/admin/users", isPrivate: true, component: HOME },
   LOGIN: { path: "/login", isPrivate: false, component: LOGIN },
 };
 
 const menu: MenuItem[] = [
   {
     title: "Dashboard",
-    submenu: [{ route: ROUTE_CONFIG.DASHBOARD, title: "Overview" }],
+    eventKey: ROUTE_CONFIG.DASHBOARD.path,
+    route: ROUTE_CONFIG.DASHBOARD,
+    submenu: [],
   },
-  { route: ROUTE_CONFIG.LOGIN, title: "Login", submenu: [] },
+  {
+    title: "Administration",
+    eventKey: ROUTE_CONFIG.ADMIN_OVERVIEW.path,
+    submenu: [
+      { route: ROUTE_CONFIG.ADMIN_OVERVIEW, title: "Overview", eventKey: "admin" },
+      { route: ROUTE_CONFIG.ADMIN_USERS, title: "Users", eventKey: "users" },
+    ],
+  },
+  { route: ROUTE_CONFIG.LOGIN, title: "Login", eventKey: "login", submenu: [] },
 ];
 
 export default menu;

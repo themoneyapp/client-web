@@ -6,8 +6,6 @@ import { useUserStore } from "src/store";
 
 import Routes from "./Routes";
 
-import "src/styles/app.scss";
-
 function Root(): JSX.Element {
   const [loginChecked, checkUser] = useUserStore((s) => [s.loginChecked, s.checkUser], shallow);
 

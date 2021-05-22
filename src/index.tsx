@@ -6,7 +6,12 @@ import Root from "src/containers/Root";
 import reportWebVitals from "src/reportWebVitals";
 import * as serviceWorkerRegistration from "src/serviceWorkerRegistration";
 
-import "src/styles/index.scss";
+// core styles
+import "src/styles/volt.scss";
+
+// vendor styles
+import "@fortawesome/fontawesome-free/css/all.css";
+// import "react-datetime/css/react-datetime.css";
 
 render(
   <React.StrictMode>
