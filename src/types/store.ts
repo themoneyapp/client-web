@@ -1,13 +1,21 @@
-import { StatusEnum } from "./common";
-
 export interface BaseStore {
   reset(): void;
 }
 
-export interface AppState {
-  status: StatusEnum;
+export interface User {
+  name: string;
+  is_admin: boolean;
+  token: string;
 }
 
-export interface AppStore extends BaseStore, AppState {
-  startApp(): Promise<void>;
+export interface UserState {
+  loginChecked: boolean;
+  isLoggedIn: boolean;
+  user?: User;
+}
+
+export interface UserStore extends BaseStore, UserState {
+  login(): Promise<void>;
+  logout(): Promise<void>;
+  checkUser(): Promise<void>;
 }

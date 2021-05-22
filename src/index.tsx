@@ -1,7 +1,8 @@
 import React from "react";
 import { render } from "react-dom";
 
-import App from "src/containers/app";
+import ErrorHandler from "src/containers/ErrorHandler";
+import Root from "src/containers/Root";
 import reportWebVitals from "src/reportWebVitals";
 import * as serviceWorkerRegistration from "src/serviceWorkerRegistration";
 
@@ -9,7 +10,9 @@ import "src/styles/index.scss";
 
 render(
   <React.StrictMode>
-    <App />
+    <ErrorHandler>
+      <Root />
+    </ErrorHandler>
   </React.StrictMode>,
   document.getElementById("root")
 );

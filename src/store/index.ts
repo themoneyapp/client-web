@@ -1,1 +1,1 @@
-export { useStore as useAppStore } from "./app";
+export { useStore as useUserStore } from "./user";
