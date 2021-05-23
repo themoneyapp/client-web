@@ -1,4 +1,4 @@
-import { SetState } from "zustand";
+import { GetState, SetState } from "zustand";
 
 import { UserStore } from "src/types/store";
 import { UserSignUpRequest, UserSignInRequest } from "src/types/user";
@@ -32,6 +32,18 @@ export async function handleSignUp(
   // });
   setState({
     user: { name: payload.name, is_admin: false, email: payload.email, token: "token" },
+    userChecked: true,
+  });
+}
+
+export async function handleCheckUser(
+  setState: SetState<UserStore>,
+  getState: GetState<UserStore>
+): Promise<void> {
+  const state = getState();
+  const isUserValid = true;
+  setState({
+    user: isUserValid ? state.user : null,
     userChecked: true,
   });
 }

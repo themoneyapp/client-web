@@ -1,8 +1,15 @@
 import { Optional } from "./generic";
 import { UserSignUpRequest, UserSignInRequest } from "./user";
 
-export interface BaseStore {
+interface BaseStore {
   reset(): void;
+}
+interface BasePersistedStore extends BaseStore {
+  setHyderated(): void;
+}
+
+interface BasePersistedState {
+  rehydrated: boolean;
 }
 
 export interface User {
@@ -12,14 +19,14 @@ export interface User {
   token: string;
 }
 
-export interface UserState {
+export interface UserState extends BasePersistedState {
   userChecked: boolean;
   user: Optional<User>;
 }
 
-export interface UserStore extends BaseStore, UserState {
+export interface UserStore extends UserState, BasePersistedStore {
   handleSignIn(payload: UserSignInRequest): Promise<void>;
   handleSignUp(payload: UserSignUpRequest): Promise<void>;
   handleLogout(): Promise<void>;
-  checkUser(): Promise<void>;
+  handleCheckUser(): Promise<void>;
 }

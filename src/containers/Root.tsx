@@ -10,20 +10,20 @@ import { Footer, Navbar, Sidebar } from "./Layout";
 import Routes from "./Routes";
 
 function Root(): JSX.Element {
-  const [userChecked, user, checkUser] = useUserStore(
-    (s) => [s.userChecked, s.user, s.checkUser],
+  const [isUserStateRehydrated, userChecked, user, handleCheckUser] = useUserStore(
+    (s) => [s.rehydrated, s.userChecked, s.user, s.handleCheckUser],
     shallow
   );
-  const isAuthenticated = useUserStore(userSelectors.checkIsAuthenticated);
+  const isAuthenticated = useUserStore(userSelectors.selectIsAuthenticated);
   const prevUser = usePrevious(user);
   const prevUserChecked = usePrevious(userChecked);
   const [showLoader, setShowLoader] = useState(!userChecked);
 
   useEffect((): void => {
-    if (!userChecked) {
-      checkUser();
+    if (isUserStateRehydrated && !userChecked) {
+      handleCheckUser();
     }
-  });
+  }, [isUserStateRehydrated, userChecked]);
 
   // Add this extra effect to show the preloader complete animation.
   useEffect((): (() => void) | undefined => {

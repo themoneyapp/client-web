@@ -11,7 +11,7 @@ function Authenticated(
 ): (props: RouteComponentProps) => JSX.Element {
   // Actual component
   function Component(props: RouteComponentProps): JSX.Element {
-    const isAuthenticated = useUserStore(userSelectors.checkIsAuthenticated);
+    const isAuthenticated = useUserStore(userSelectors.selectIsAuthenticated);
     const userChecked = useUserStore((s) => s.userChecked);
     const [shouldRedirect, setShouldRedirect] = useState(false);
 
