@@ -1,28 +1,89 @@
-import { faEnvelope, faUnlockAlt } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  Col,
-  Row,
-  Form,
-  Card,
-  Button,
-  FormCheck,
-  Container,
-  InputGroup,
-} from "@themesberg/react-bootstrap";
+import { Alert, Col, Row, Form, Button, Container } from "@themesberg/react-bootstrap";
+import { withFormik, FormikProps } from "formik";
+import { useState, SetStateAction, Dispatch } from "react";
 import { Link } from "react-router-dom";
+import * as Yup from "yup";
 
 import BgImage from "src/assets/illustrations/signin.svg";
+import { TextField } from "src/components/fields";
 import { ROUTE_CONFIG } from "src/constants/menu";
 import { useUserStore } from "src/store";
 
+interface FormProps {
+  handleLogin: (email: string, password: string) => Promise<void>;
+  setGlobalError: Dispatch<SetStateAction<string | null>>;
+}
+
+interface FormValues {
+  email: string;
+  password: string;
+}
+
+interface ServerErrors extends FormValues {
+  message: string | null;
+}
+
+const initialValues: FormValues = {
+  email: "",
+  password: "",
+};
+
+const LoginSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Required"),
+  password: Yup.string().required("Required"),
+});
+
+const InnerForm = (props: FormikProps<FormValues>): JSX.Element => {
+  const { handleSubmit, isSubmitting } = props;
+
+  return (
+    <Form className="mt-4" onSubmit={handleSubmit}>
+      <TextField
+        autoComplete="off"
+        autoFocus={true}
+        label="Your Email"
+        name="email"
+        placeholder="user@example.com"
+        type="email"
+        disabled={isSubmitting}
+      />
+      <TextField
+        autoComplete="off"
+        label="Your Password"
+        name="password"
+        placeholder="Password"
+        type="password"
+        disabled={isSubmitting}
+      />
+
+      <Button variant="primary" type="submit" className="w-100" disabled={isSubmitting}>
+        {isSubmitting && (
+          <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true" />
+        )}
+        {!isSubmitting && <span>Sign in </span>}
+      </Button>
+    </Form>
+  );
+};
+
+const LoginForm = withFormik<FormProps, FormValues>({
+  handleSubmit: async (values, { props, resetForm, setErrors }): Promise<void> => {
+    await props
+      .handleLogin(values.email, values.password)
+      .then(() => resetForm())
+      .catch(({ message = null, ...fieldErrors }: ServerErrors) => {
+        props.setGlobalError(message);
+        setErrors(fieldErrors);
+      });
+  },
+  mapPropsToValues: () => initialValues,
+  validationSchema: LoginSchema,
+})(InnerForm);
+
 export default (): JSX.Element => {
   const handleLogin = useUserStore((s) => s.login);
+  const [globalError, setGlobalError] = useState<string | null>(null);
 
-  const handle = (e: any): void => {
-    e.preventDefault();
-    handleLogin();
-  };
   return (
     <section className="d-flex align-items-center my-5 mt-lg-6 mb-lg-5">
       <Container>
@@ -35,54 +96,33 @@ export default (): JSX.Element => {
               <div className="text-center text-md-center mb-4 mt-md-0">
                 <h3 className="mb-0">Sign in to our platform</h3>
               </div>
-              <Form className="mt-4" onSubmit={handle}>
-                <Form.Group id="email" className="mb-4">
-                  <Form.Label>Your Email</Form.Label>
-                  <InputGroup>
-                    <InputGroup.Text>
-                      <FontAwesomeIcon icon={faEnvelope} />
-                    </InputGroup.Text>
-                    <Form.Control
-                      autoFocus
-                      required
-                      type="email"
-                      placeholder="example@company.com"
-                    />
-                  </InputGroup>
-                </Form.Group>
-                <Form.Group>
-                  <Form.Group id="password" className="mb-4">
-                    <Form.Label>Your Password</Form.Label>
-                    <InputGroup>
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon={faUnlockAlt} />
-                      </InputGroup.Text>
-                      <Form.Control required type="password" placeholder="Password" />
-                    </InputGroup>
-                  </Form.Group>
-                  <div className="d-flex justify-content-between align-items-center mb-4">
-                    <Form.Check type="checkbox">
-                      <FormCheck.Input id="defaultCheck5" className="me-2" />
-                      <FormCheck.Label htmlFor="defaultCheck5" className="mb-0">
-                        Remember me
-                      </FormCheck.Label>
-                    </Form.Check>
-                    <Card.Link className="small text-end">Lost password?</Card.Link>
-                  </div>
-                </Form.Group>
-                <Button variant="primary" type="submit" className="w-100">
-                  Sign in
-                </Button>
-              </Form>
-
-              <div className="d-flex justify-content-center align-items-center mt-4">
+              {globalError && <Alert variant="danger">{globalError}</Alert>}
+              <LoginForm handleLogin={handleLogin} setGlobalError={setGlobalError} />
+              <div className="d-flex justify-content-between align-items-center mb-4 mt-4">
                 <span className="fw-normal">
-                  Not registered?
-                  <Card.Link as={Link} to={ROUTE_CONFIG.DASHBOARD.path} className="fw-bold">
+                  <Button
+                    as={Link}
+                    to={ROUTE_CONFIG.DASHBOARD.path}
+                    type="button"
+                    variant="outline-dark"
+                    size="sm"
+                  >
+                    {` Lost Password? `}
+                  </Button>
+                </span>
+                <span className="fw-normal">
+                  <Button
+                    as={Link}
+                    to={ROUTE_CONFIG.DASHBOARD.path}
+                    type="button"
+                    variant="outline-dark"
+                    size="sm"
+                  >
                     {` Create account `}
-                  </Card.Link>
+                  </Button>
                 </span>
               </div>
+              <div className="d-flex justify-content-center align-items-center mt-4"></div>
             </div>
           </Col>
         </Row>

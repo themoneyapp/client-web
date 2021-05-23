@@ -11,8 +11,8 @@ const defaultState: UserState = {
 
 export const useStore = createStore<UserStore>((set) => ({
   ...defaultState,
-  login: async (): Promise<void> => {
-    await actions.login(set);
+  login: async (email: string, password: string): Promise<void> => {
+    return actions.login(email, password, set);
   },
   checkUser: async (): Promise<void> => {
     await actions.logout(set);
