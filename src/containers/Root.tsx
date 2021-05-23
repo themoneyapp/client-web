@@ -3,42 +3,58 @@ import { BrowserRouter } from "react-router-dom";
 import shallow from "zustand/shallow";
 
 import Preloader from "src/components/Preloader";
-import { useUserStore } from "src/store";
+import { usePrevious } from "src/modules/hooks";
+import { userSelectors, useUserStore } from "src/store";
 
 import { Footer, Navbar, Sidebar } from "./Layout";
 import Routes from "./Routes";
 
 function Root(): JSX.Element {
-  const [loginChecked, isLoggedIn, checkUser] = useUserStore(
-    (s) => [s.loginChecked, s.isLoggedIn, s.checkUser],
+  const [userChecked, user, checkUser] = useUserStore(
+    (s) => [s.userChecked, s.user, s.checkUser],
     shallow
   );
-  const [showLoader, setShowLoader] = useState(!loginChecked);
+  const isAuthenticated = useUserStore(userSelectors.checkIsAuthenticated);
+  const prevUser = usePrevious(user);
+  const prevUserChecked = usePrevious(userChecked);
+  const [showLoader, setShowLoader] = useState(!userChecked);
 
   useEffect((): void => {
-    if (!loginChecked) {
+    if (!userChecked) {
       checkUser();
     }
   });
 
   // Add this extra effect to show the preloader complete animation.
-  useEffect((): void => {
-    if (loginChecked) {
-      setTimeout((): void => {
+  useEffect((): (() => void) | undefined => {
+    if (userChecked) {
+      const func = setTimeout((): void => {
         setShowLoader(false);
       }, 1000);
+      return (): void => clearInterval(func);
     }
-  }, [loginChecked]);
+  }, [userChecked]);
+
+  // Use effect to show preloader when user is authenticated.
+  useEffect((): (() => void) | undefined => {
+    if (user !== prevUser && !!user && userChecked === prevUserChecked) {
+      setShowLoader(true);
+      const func = setTimeout((): void => {
+        setShowLoader(false);
+      }, 2000);
+      return (): void => clearInterval(func);
+    }
+  }, [user]);
 
   return (
     <div className="App">
       <BrowserRouter>
         <Suspense fallback={<Preloader show={true} />}>
           <Preloader show={showLoader} />
-          {isLoggedIn && <Sidebar />}
+          {isAuthenticated && <Sidebar />}
 
-          <main className={isLoggedIn ? "content" : ""}>
-            {isLoggedIn && <Navbar />}
+          <main className={isAuthenticated ? "content" : ""}>
+            {isAuthenticated && <Navbar />}
             <Routes />
             <Footer />
           </main>

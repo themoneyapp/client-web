@@ -19,12 +19,13 @@ import SimpleBar from "simplebar-react";
 import ReactHero from "src/assets/images/logo.svg";
 import ProfilePicture from "src/assets/images/team/profile-picture-3.jpg";
 import SIDEBAR_MENU, { ROUTES } from "src/constants/menu";
+import { Optional } from "src/types/generic";
 
 interface CollapsableNavItemProps {
   eventKey: string;
   title: string;
   icon: IconProp;
-  children?: JSX.Element | JSX.Element[];
+  children: Optional<JSX.Element | JSX.Element[]>;
 }
 
 interface NavItemProps {
@@ -100,22 +101,22 @@ export default (): JSX.Element => {
       <Nav.Item className={navItemClassName} onClick={(): void => setShow(false)}>
         <Nav.Link {...linkProps} target={target} className={classNames}>
           <span>
-            {icon ? (
+            {icon && (
               <span className="sidebar-icon">
                 <FontAwesomeIcon icon={icon} />{" "}
               </span>
-            ) : null}
-            {image ? (
+            )}
+            {image && (
               <Image src={image} width={20} height={20} className="sidebar-icon svg-icon" />
-            ) : null}
+            )}
 
             <span className="sidebar-text">{title}</span>
           </span>
-          {badgeText ? (
+          {badgeText && (
             <Badge pill bg={badgeBg} text={badgeColor} className="badge-md notification-count ms-2">
               {badgeText}
             </Badge>
-          ) : null}
+          )}
         </Nav.Link>
       </Nav.Item>
     );
@@ -129,7 +130,7 @@ export default (): JSX.Element => {
         variant="dark"
         className="navbar-theme-primary px-4 d-md-none"
       >
-        <Navbar.Brand className="me-lg-5" as={Link} to={ROUTES.DASHBOARD.path}>
+        <Navbar.Brand className="me-lg-5" as={Link} to={ROUTES.Dashboard.path}>
           <Image src={ReactHero} className="navbar-brand-light" />
         </Navbar.Brand>
         <Navbar.Toggle as={Button} aria-controls="main-navbar" onClick={onCollapse}>
@@ -153,7 +154,7 @@ export default (): JSX.Element => {
                     as={Link}
                     variant="secondary"
                     size="sm"
-                    to={ROUTES.LOGIN.path}
+                    to={ROUTES.SignIn.path}
                     className="text-dark"
                   >
                     <FontAwesomeIcon icon={faSignOutAlt} className="me-2" /> Sign Out

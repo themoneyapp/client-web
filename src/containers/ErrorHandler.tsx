@@ -1,5 +1,7 @@
 import React, { Component, ReactNode } from "react";
 
+import { Optional } from "src/types/generic";
+
 type Props = {
   children: JSX.Element;
   onError?: (error: Error, componentStack: string) => void;
@@ -10,7 +12,7 @@ type ErrorInfo = {
 };
 
 type State = {
-  error: Error | null;
+  error: Optional<Error>;
 };
 
 export default class ErrorHandler extends Component<Props, State> {

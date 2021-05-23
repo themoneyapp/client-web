@@ -1,28 +1,34 @@
 import createStore from "zustand";
 
 import { UserState, UserStore } from "src/types/store";
+import { UserSignUpRequest, UserSignInRequest } from "src/types/user";
 
 import * as actions from "./actions";
 
 const defaultState: UserState = {
-  loginChecked: false,
-  isLoggedIn: true,
+  user: null,
+  userChecked: false,
 };
 
 export const useStore = createStore<UserStore>((set) => ({
   ...defaultState,
-  login: async (email: string, password: string): Promise<void> => {
-    return actions.login(email, password, set);
+  handleSignIn: async (payload: UserSignInRequest): Promise<void> => {
+    return actions.handleSignIn(payload, set);
+  },
+  handleSignUp: async (payload: UserSignUpRequest): Promise<void> => {
+    return actions.handleSignUp(payload, set);
   },
   checkUser: async (): Promise<void> => {
-    await actions.logout(set);
+    await actions.handleLogout(set);
   },
-  logout: async (): Promise<void> => {
-    await actions.logout(set);
+  handleLogout: async (): Promise<void> => {
+    await actions.handleLogout(set);
   },
   reset: (): void => {
     set((): UserState => defaultState);
   },
 }));
+
+export * as selectors from "./selectors";
 
 export default useStore;

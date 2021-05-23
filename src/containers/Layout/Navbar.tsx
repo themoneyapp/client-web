@@ -139,7 +139,7 @@ export default (): JSX.Element => {
               <Dropdown.Toggle as={Nav.Link} className="text-dark icon-notifications me-lg-3">
                 <span className="icon icon-sm">
                   <FontAwesomeIcon icon={faBell} className="bell-shake" />
-                  {areNotificationsRead ? null : (
+                  {!areNotificationsRead && (
                     <span className="icon-badge rounded-circle unread-notifications" />
                   )}
                 </span>

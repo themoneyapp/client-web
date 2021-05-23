@@ -1,1 +1,1 @@
-export { useStore as useUserStore } from "./user";
+export { useStore as useUserStore, selectors as userSelectors } from "./user";

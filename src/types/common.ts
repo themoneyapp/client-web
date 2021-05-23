@@ -1,9 +1,15 @@
 import { ComponentType as ReactComponentType } from "react";
 import { RouteComponentProps } from "react-router-dom";
 
+import { Optional } from "./generic";
+
 export interface BigObject<T> {
   [index: string]: T;
 }
+
+export type ServerErrors<T> = Partial<T> & {
+  message: Optional<string>;
+};
 
 export type ComponentType = ReactComponentType<RouteComponentProps>;
 

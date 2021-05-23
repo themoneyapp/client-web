@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { RouteComponentProps, Redirect } from "react-router-dom";
-import shallow from "zustand/shallow";
 
 import { ROUTES } from "src/constants/menu";
-import { useUserStore } from "src/store";
+import { userSelectors, useUserStore } from "src/store";
 import { ComponentType } from "src/types/common";
 
 function Authenticated(
@@ -12,21 +11,22 @@ function Authenticated(
 ): (props: RouteComponentProps) => JSX.Element {
   // Actual component
   function Component(props: RouteComponentProps): JSX.Element {
-    const [isLoggedIn, loginChecked] = useUserStore((s) => [s.isLoggedIn, s.loginChecked], shallow);
+    const isAuthenticated = useUserStore(userSelectors.checkIsAuthenticated);
+    const userChecked = useUserStore((s) => s.userChecked);
     const [shouldRedirect, setShouldRedirect] = useState(false);
 
     useEffect((): void => {
-      if (loginChecked && ((!isLoggedIn && isPrivate) || (isLoggedIn && !isPrivate))) {
+      if (userChecked && ((!isAuthenticated && isPrivate) || (isAuthenticated && !isPrivate))) {
         setShouldRedirect(true);
       }
-    }, [isLoggedIn, loginChecked]);
+    }, [isAuthenticated, userChecked]);
 
-    if (!loginChecked) {
+    if (!userChecked) {
       return <h1>Loading...</h1>;
     }
 
     if (shouldRedirect) {
-      return <Redirect to={isPrivate ? ROUTES.LOGIN.path : ROUTES.DASHBOARD.path} />;
+      return <Redirect to={isPrivate ? ROUTES.SignIn.path : ROUTES.Dashboard.path} />;
     }
 
     return <WrappedComponent {...props} />;

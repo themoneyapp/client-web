@@ -8,32 +8,26 @@ import BgImage from "src/assets/illustrations/signin.svg";
 import { TextField } from "src/components/fields";
 import { ROUTES } from "src/constants/menu";
 import { useUserStore } from "src/store";
+import { ServerErrors } from "src/types/common";
+import { Optional } from "src/types/generic";
+import { UserSignInFormValues, UserSignInRequest } from "src/types/user";
 
 interface FormProps {
-  handleLogin: (email: string, password: string) => Promise<void>;
-  setGlobalError: Dispatch<SetStateAction<string | null>>;
+  onSubmit: (payload: UserSignInRequest) => Promise<void>;
+  setGlobalError: Dispatch<SetStateAction<Optional<string>>>;
 }
 
-interface FormValues {
-  email: string;
-  password: string;
-}
-
-interface ServerErrors extends FormValues {
-  message: string | null;
-}
-
-const initialValues: FormValues = {
+const initialValues: UserSignInFormValues = {
   email: "",
   password: "",
 };
 
-const LoginSchema = Yup.object().shape({
+const FormSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
   password: Yup.string().required("Required"),
 });
 
-const InnerForm = (props: FormikProps<FormValues>): JSX.Element => {
+const InnerForm = (props: FormikProps<UserSignInFormValues>): JSX.Element => {
   const { handleSubmit, isSubmitting } = props;
 
   return (
@@ -66,23 +60,23 @@ const InnerForm = (props: FormikProps<FormValues>): JSX.Element => {
   );
 };
 
-const LoginForm = withFormik<FormProps, FormValues>({
-  handleSubmit: async (values, { props, resetForm, setErrors }): Promise<void> => {
+const FormComponent = withFormik<FormProps, UserSignInFormValues>({
+  handleSubmit: async (values, { props, setErrors }): Promise<void> => {
     await props
-      .handleLogin(values.email, values.password)
-      .then(() => resetForm())
-      .catch(({ message = null, ...fieldErrors }: ServerErrors) => {
+      .onSubmit(values)
+      // .then(() => resetForm())
+      .catch(({ message = null, ...fieldErrors }: ServerErrors<UserSignInFormValues>) => {
         props.setGlobalError(message);
         setErrors(fieldErrors);
       });
   },
   mapPropsToValues: () => initialValues,
-  validationSchema: LoginSchema,
+  validationSchema: FormSchema,
 })(InnerForm);
 
 export default (): JSX.Element => {
-  const handleLogin = useUserStore((s) => s.login);
-  const [globalError, setGlobalError] = useState<string | null>(null);
+  const handleSignIn = useUserStore((s) => s.handleSignIn);
+  const [globalError, setGlobalError] = useState<Optional<string>>(null);
 
   return (
     <section className="d-flex align-items-center my-5 mt-lg-6 mb-lg-5">
@@ -97,12 +91,12 @@ export default (): JSX.Element => {
                 <h3 className="mb-0">Sign in to our platform</h3>
               </div>
               {globalError && <Alert variant="danger">{globalError}</Alert>}
-              <LoginForm handleLogin={handleLogin} setGlobalError={setGlobalError} />
+              <FormComponent onSubmit={handleSignIn} setGlobalError={setGlobalError} />
               <div className="d-flex justify-content-between align-items-center mb-4 mt-4">
                 <span className="fw-normal">
                   <Button
                     as={Link}
-                    to={ROUTES.DASHBOARD.path}
+                    to={ROUTES.Dashboard.path}
                     type="button"
                     variant="outline-dark"
                     size="sm"
@@ -113,12 +107,12 @@ export default (): JSX.Element => {
                 <span className="fw-normal">
                   <Button
                     as={Link}
-                    to={ROUTES.DASHBOARD.path}
+                    to={ROUTES.SignUp.path}
                     type="button"
                     variant="outline-dark"
                     size="sm"
                   >
-                    {` Create account `}
+                    {` Create Account `}
                   </Button>
                 </span>
               </div>

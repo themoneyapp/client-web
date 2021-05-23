@@ -1,3 +1,6 @@
+import { Optional } from "./generic";
+import { UserSignUpRequest, UserSignInRequest } from "./user";
+
 export interface BaseStore {
   reset(): void;
 }
@@ -10,13 +13,13 @@ export interface User {
 }
 
 export interface UserState {
-  loginChecked: boolean;
-  isLoggedIn: boolean;
-  user?: User;
+  userChecked: boolean;
+  user: Optional<User>;
 }
 
 export interface UserStore extends BaseStore, UserState {
-  login(email: string, password: string): Promise<void>;
-  logout(): Promise<void>;
+  handleSignIn(payload: UserSignInRequest): Promise<void>;
+  handleSignUp(payload: UserSignUpRequest): Promise<void>;
+  handleLogout(): Promise<void>;
   checkUser(): Promise<void>;
 }
