@@ -22,7 +22,7 @@ function Authenticated(
     }, [isLoggedIn, loginChecked]);
 
     if (!loginChecked) {
-      return <h1>Loading user....</h1>;
+      return <h1>Loading...</h1>;
     }
 
     if (shouldRedirect) {

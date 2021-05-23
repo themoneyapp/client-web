@@ -173,32 +173,34 @@ export default (): JSX.Element => {
                 image={ReactHero}
               />
 
-              {SIDEBAR_MENU.map((item, index: number): JSX.Element => {
-                if (item.route) {
+              {SIDEBAR_MENU.filter((item): boolean => !item.route || item.route.isPrivate).map(
+                (item, index: number): JSX.Element => {
+                  if (item.route) {
+                    return (
+                      <NavItem
+                        key={index}
+                        title={item.title}
+                        link={item.route.path}
+                        icon={faChartPie}
+                      />
+                    );
+                  }
                   return (
-                    <NavItem
+                    <CollapsableNavItem
                       key={index}
+                      eventKey={`${item.eventKey}/`}
                       title={item.title}
-                      link={item.route.path}
-                      icon={faChartPie}
-                    />
+                      icon={faTable}
+                    >
+                      {item.submenu.map(
+                        (sub): JSX.Element => (
+                          <NavItem title={sub.title} link={sub.route ? sub.route.path : "/"} />
+                        )
+                      )}
+                    </CollapsableNavItem>
                   );
                 }
-                return (
-                  <CollapsableNavItem
-                    key={index}
-                    eventKey={`${item.eventKey}/`}
-                    title={item.title}
-                    icon={faTable}
-                  >
-                    {item.submenu.map(
-                      (sub): JSX.Element => (
-                        <NavItem title={sub.title} link={sub.route ? sub.route.path : "/"} />
-                      )
-                    )}
-                  </CollapsableNavItem>
-                );
-              })}
+              )}
 
               <Dropdown.Divider className="my-3 border-indigo" />
             </Nav>
