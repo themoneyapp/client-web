@@ -193,8 +193,12 @@ export default (): JSX.Element => {
                       icon={faTable}
                     >
                       {item.submenu.map(
-                        (sub): JSX.Element => (
-                          <NavItem title={sub.title} link={sub.route ? sub.route.path : "/"} />
+                        (sub, subIndex: number): JSX.Element => (
+                          <NavItem
+                            key={subIndex}
+                            title={sub.title}
+                            link={sub.route ? sub.route.path : "/"}
+                          />
                         )
                       )}
                     </CollapsableNavItem>
