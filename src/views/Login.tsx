@@ -6,7 +6,7 @@ import * as Yup from "yup";
 
 import BgImage from "src/assets/illustrations/signin.svg";
 import { TextField } from "src/components/fields";
-import { ROUTE_CONFIG } from "src/constants/menu";
+import { ROUTES } from "src/constants/menu";
 import { useUserStore } from "src/store";
 
 interface FormProps {
@@ -102,7 +102,7 @@ export default (): JSX.Element => {
                 <span className="fw-normal">
                   <Button
                     as={Link}
-                    to={ROUTE_CONFIG.DASHBOARD.path}
+                    to={ROUTES.DASHBOARD.path}
                     type="button"
                     variant="outline-dark"
                     size="sm"
@@ -113,7 +113,7 @@ export default (): JSX.Element => {
                 <span className="fw-normal">
                   <Button
                     as={Link}
-                    to={ROUTE_CONFIG.DASHBOARD.path}
+                    to={ROUTES.DASHBOARD.path}
                     type="button"
                     variant="outline-dark"
                     size="sm"

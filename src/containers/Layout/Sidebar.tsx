@@ -18,7 +18,7 @@ import SimpleBar from "simplebar-react";
 
 import ReactHero from "src/assets/images/logo.svg";
 import ProfilePicture from "src/assets/images/team/profile-picture-3.jpg";
-import SIDEBAR_MENU, { ROUTE_CONFIG } from "src/constants/menu";
+import SIDEBAR_MENU, { ROUTES } from "src/constants/menu";
 
 interface CollapsableNavItemProps {
   eventKey: string;
@@ -129,7 +129,7 @@ export default (): JSX.Element => {
         variant="dark"
         className="navbar-theme-primary px-4 d-md-none"
       >
-        <Navbar.Brand className="me-lg-5" as={Link} to={ROUTE_CONFIG.DASHBOARD.path}>
+        <Navbar.Brand className="me-lg-5" as={Link} to={ROUTES.DASHBOARD.path}>
           <Image src={ReactHero} className="navbar-brand-light" />
         </Navbar.Brand>
         <Navbar.Toggle as={Button} aria-controls="main-navbar" onClick={onCollapse}>
@@ -153,7 +153,7 @@ export default (): JSX.Element => {
                     as={Link}
                     variant="secondary"
                     size="sm"
-                    to={ROUTE_CONFIG.LOGIN.path}
+                    to={ROUTES.LOGIN.path}
                     className="text-dark"
                   >
                     <FontAwesomeIcon icon={faSignOutAlt} className="me-2" /> Sign Out

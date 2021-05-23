@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { RouteComponentProps, Redirect } from "react-router-dom";
 import shallow from "zustand/shallow";
 
-import { ROUTE_CONFIG } from "src/constants/menu";
+import { ROUTES } from "src/constants/menu";
 import { useUserStore } from "src/store";
 import { ComponentType } from "src/types/common";
 
@@ -26,7 +26,7 @@ function Authenticated(
     }
 
     if (shouldRedirect) {
-      return <Redirect to={isPrivate ? ROUTE_CONFIG.LOGIN.path : ROUTE_CONFIG.DASHBOARD.path} />;
+      return <Redirect to={isPrivate ? ROUTES.LOGIN.path : ROUTES.DASHBOARD.path} />;
     }
 
     return <WrappedComponent {...props} />;
