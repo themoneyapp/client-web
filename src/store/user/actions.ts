@@ -43,9 +43,26 @@ export async function handleSignIn(
   payload: UserSignInRequest,
   setState: SetState<UserStore>
 ): Promise<void> {
-  await _sleep(4000);
-  console.log(payload, setState);
-  // await Promise.reject({ email: "invalid user" });
+  console.log("abcd", payload);
+  const formData = new FormData();
+  let key: keyof UserSignInRequest;
+  for (key in payload) {
+    let payloadKey: string = key;
+    if (key == "email") {
+      payloadKey = "username";
+    }
+    formData.append(payloadKey, payload[key]);
+  }
+
+  apiClient({
+    url: "/auth/access-token",
+    data: formData,
+    method: "POST",
+    headers: {
+      "Content-Type": "x-www-form-urlencoded",
+    },
+  });
+  // console.log(response);
   setState({
     accessToken: "str",
   });
