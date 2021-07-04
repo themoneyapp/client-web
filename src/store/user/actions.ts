@@ -15,7 +15,15 @@ export async function handleSignIn(
   console.log(payload, setState);
   // await Promise.reject({ email: "invalid user" });
   setState({
-    user: { name: "user", is_admin: false, email: payload.email, token: "token" },
+    user: {
+      id: "user-id",
+      full_name: "user",
+      is_admin: false,
+      email: payload.email,
+      is_active: true,
+      is_superuser: false,
+      token: "token",
+    },
     userChecked: true,
   });
 }
@@ -30,10 +38,6 @@ export async function handleSignUp(
   //   email: "User already exists",
   //   message: "User Registrations are disabled.",
   // });
-  setState({
-    user: { name: payload.name, is_admin: false, email: payload.email, token: "token" },
-    userChecked: true,
-  });
 }
 
 export async function handleCheckUser(

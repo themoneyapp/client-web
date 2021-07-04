@@ -1,5 +1,6 @@
 export type UserSignInRequest = {
   email: string;
+  grant_type: string;
   password: string;
 };
 
@@ -7,7 +8,7 @@ export type UserSignInFormValues = UserSignInRequest;
 
 export type UserSignUpRequest = {
   email: string;
-  name: string;
+  full_name: string;
   password: string;
 };
 

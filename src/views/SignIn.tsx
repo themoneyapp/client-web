@@ -19,6 +19,7 @@ interface FormProps {
 
 const initialValues: UserSignInFormValues = {
   email: "",
+  grant_type: "password",
   password: "",
 };
 

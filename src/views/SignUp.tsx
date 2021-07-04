@@ -19,14 +19,14 @@ interface FormProps {
 
 const initialValues: UserSignUpFormValues = {
   email: "",
-  name: "",
+  full_name: "",
   password: "",
   passwordConfirmation: "",
 };
 
 const FormSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
-  name: Yup.string().required("Required"),
+  full_name: Yup.string().required("Required"),
   password: Yup.string().required("Required"),
   passwordConfirmation: Yup.string()
     .required("Required")
@@ -50,7 +50,7 @@ const InnerForm = (props: FormikProps<UserSignUpFormValues>): JSX.Element => {
       <TextField
         autoComplete="off"
         label="Your Name"
-        name="name"
+        name="full_name"
         placeholder="John Doe"
         type="text"
         disabled={isSubmitting}
@@ -85,7 +85,7 @@ const InnerForm = (props: FormikProps<UserSignUpFormValues>): JSX.Element => {
 const FormComponent = withFormik<FormProps, UserSignUpFormValues>({
   handleSubmit: async (values, { props, setErrors }): Promise<void> => {
     await props
-      .onSubmit({ name: values.name, email: values.email, password: values.password })
+      .onSubmit({ full_name: values.full_name, email: values.email, password: values.password })
       // .then(() => resetForm())
       .catch(({ message = null, ...fieldErrors }: ServerErrors<UserSignUpFormValues>) => {
         props.setGlobalError(message);

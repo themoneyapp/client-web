@@ -13,9 +13,12 @@ interface BasePersistedState {
 }
 
 export interface User {
-  name: string;
+  full_name: string;
   email: string;
+  id: string;
+  is_active: boolean;
   is_admin: boolean;
+  is_superuser: boolean;
   token: string;
 }
 
