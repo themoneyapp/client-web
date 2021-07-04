@@ -1,5 +1,6 @@
 import { GetState, SetState } from "zustand";
 
+import apiClient from "src/modules/apiClient";
 import { UserStore } from "src/types/store";
 import { UserSignUpRequest, UserSignInRequest } from "src/types/user";
 
@@ -54,17 +55,14 @@ export async function handleSignUp(
   payload: UserSignUpRequest,
   setState: SetState<UserStore>
 ): Promise<void> {
-  await _sleep(4000);
   console.log(payload, setState);
-  // await Promise.reject({
-  //   email: "User already exists",
-  //   message: "User Registrations are disabled.",
-  // });
+  apiClient.post("/users/open", { payload });
 }
 
 export async function handleLogout(setState: SetState<UserStore>): Promise<void> {
   setState({
     user: null,
     userChecked: true,
+    accessToken: null,
   });
 }
