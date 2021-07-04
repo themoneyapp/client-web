@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const basePath = "localhost:8000"; // production mode - ""
+const basePath = "http://localhost:8000"; // production mode - ""
 const apiPrefix = "/api/v1";
 
 const apiClient = axios.create({

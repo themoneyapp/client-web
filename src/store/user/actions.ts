@@ -56,7 +56,7 @@ export async function handleSignUp(
   setState: SetState<UserStore>
 ): Promise<void> {
   console.log(payload, setState);
-  apiClient.post("/users/open", { payload });
+  apiClient.post("/users/open", payload);
 }
 
 export async function handleLogout(setState: SetState<UserStore>): Promise<void> {
