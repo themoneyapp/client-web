@@ -23,6 +23,7 @@ import {
 import { useState } from "react";
 
 import Profile3 from "src/assets/images/team/profile-picture-3.jpg";
+import { useStore } from "src/store/user";
 
 interface NotType {
   id: number;
@@ -83,6 +84,7 @@ const NOTIFICATIONS_DATA: NotType[] = [
 ];
 
 export default (): JSX.Element => {
+  const handleLogout = useStore((s) => s.handleLogout);
   const [notifications, setNotifications] = useState(NOTIFICATIONS_DATA);
   const areNotificationsRead = notifications.reduce((acc, notif) => acc && notif.read, true);
 
@@ -189,7 +191,7 @@ export default (): JSX.Element => {
 
                 <Dropdown.Divider />
 
-                <Dropdown.Item className="fw-bold">
+                <Dropdown.Item className="fw-bold" onClick={handleLogout}>
                   <FontAwesomeIcon icon={faSignOutAlt} className="text-danger me-2" /> Logout
                 </Dropdown.Item>
               </Dropdown.Menu>

@@ -49,7 +49,6 @@ export async function handleCheckUser(
 }
 
 export async function handleLogout(setState: SetState<UserStore>): Promise<void> {
-  await _sleep(4000);
   setState({
     user: null,
     userChecked: true,
