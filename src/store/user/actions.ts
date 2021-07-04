@@ -7,6 +7,37 @@ function _sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+export async function handleGetCurrentUser(
+  getState: GetState<UserStore>,
+  setState: SetState<UserStore>
+): Promise<void> {
+  await _sleep(4000);
+
+  const state = getState();
+
+  if (!state.accessToken) {
+    setState({
+      userChecked: true,
+      accessToken: null,
+      user: null,
+    });
+
+    return;
+  }
+
+  setState({
+    user: {
+      id: "user-id",
+      full_name: "user",
+      is_admin: false,
+      email: "user",
+      is_active: true,
+      is_superuser: false,
+    },
+    userChecked: true,
+  });
+}
+
 export async function handleSignIn(
   payload: UserSignInRequest,
   setState: SetState<UserStore>
@@ -15,16 +46,7 @@ export async function handleSignIn(
   console.log(payload, setState);
   // await Promise.reject({ email: "invalid user" });
   setState({
-    user: {
-      id: "user-id",
-      full_name: "user",
-      is_admin: false,
-      email: payload.email,
-      is_active: true,
-      is_superuser: false,
-      token: "token",
-    },
-    userChecked: true,
+    accessToken: "str",
   });
 }
 
@@ -38,18 +60,6 @@ export async function handleSignUp(
   //   email: "User already exists",
   //   message: "User Registrations are disabled.",
   // });
-}
-
-export async function handleCheckUser(
-  setState: SetState<UserStore>,
-  getState: GetState<UserStore>
-): Promise<void> {
-  const state = getState();
-  const isUserValid = true;
-  setState({
-    user: isUserValid ? state.user : null,
-    userChecked: true,
-  });
 }
 
 export async function handleLogout(setState: SetState<UserStore>): Promise<void> {

@@ -10,19 +10,20 @@ import * as actions from "./actions";
 const defaultState: UserState = {
   rehydrated: false,
   user: null,
+  accessToken: null,
   userChecked: false,
 };
 
 const storeCreator = (set: SetState<UserStore>, get: GetState<UserStore>): UserStore => ({
   ...defaultState,
+  handleGetCurrentUser: async (): Promise<void> => {
+    return actions.handleGetCurrentUser(get, set);
+  },
   handleSignIn: async (payload: UserSignInRequest): Promise<void> => {
     return actions.handleSignIn(payload, set);
   },
   handleSignUp: async (payload: UserSignUpRequest): Promise<void> => {
     return actions.handleSignUp(payload, set);
-  },
-  handleCheckUser: async (): Promise<void> => {
-    await actions.handleCheckUser(set, get);
   },
   handleLogout: async (): Promise<void> => {
     await actions.handleLogout(set);
@@ -51,7 +52,7 @@ const persistOptions: PersistOptions<UserStore> = {
     return btoa(JSON.stringify(state));
   },
   version: 1,
-  whitelist: ["user"],
+  whitelist: ["accessToken"],
 };
 
 export const useStore = createStore<UserStore>(

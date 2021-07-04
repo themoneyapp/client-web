@@ -19,17 +19,17 @@ export interface User {
   is_active: boolean;
   is_admin: boolean;
   is_superuser: boolean;
-  token: string;
 }
 
 export interface UserState extends BasePersistedState {
   userChecked: boolean;
+  accessToken: Optional<string>;
   user: Optional<User>;
 }
 
 export interface UserStore extends UserState, BasePersistedStore {
+  handleGetCurrentUser(): Promise<void>;
   handleSignIn(payload: UserSignInRequest): Promise<void>;
   handleSignUp(payload: UserSignUpRequest): Promise<void>;
   handleLogout(): Promise<void>;
-  handleCheckUser(): Promise<void>;
 }
